@@ -290,7 +290,18 @@ fun hasDifferentDigits(n: Int): Boolean {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun squareSequenceDigit(n: Int): Int = TODO()
+fun squareSequenceDigit(n: Int): Int {
+    var dig1 = 0
+    var dig2 = 0
+    for (i in 1..n) {
+        dig1 = sqr(i)
+        dig2 += digitNumber(dig1)
+
+        if (dig2 >= n) break
+    }
+    for (i in 1..(dig2 - n)) dig1 /= 10
+    return dig1 % 10
+}
 
 
 /**
