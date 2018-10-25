@@ -134,13 +134,7 @@ fun minDivisor(n: Int): Int {
  *
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
-fun maxDivisor(n: Int): Int {
-    var max = n
-    do {
-        max--
-    } while (n % max != 0)
-    return max
-}
+fun maxDivisor(n: Int): Int = n / minDivisor(n)
 
 /**
  * Простая
@@ -250,16 +244,7 @@ fun revert(n: Int): Int {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun isPalindrome(n: Int): Boolean {
-    var rDig = 0
-    var mDig = n
-    while (mDig > 0) {
-        rDig *= 10
-        rDig += mDig % 10
-        mDig /= 10
-    }
-    return (rDig == n)
-}
+fun isPalindrome(n: Int): Boolean = n == revert(n)
 
 /**
  * Средняя
