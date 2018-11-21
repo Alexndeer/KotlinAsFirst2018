@@ -3,6 +3,11 @@
 package lesson4.task1
 
 import lesson1.task1.discriminant
+import lesson1.task1.sqr
+import lesson3.task1.minDivisor
+import java.io.File.separator
+import java.lang.Math.pow
+import kotlin.math.exp
 import kotlin.math.sqrt
 
 /**
@@ -115,14 +120,22 @@ fun buildSumExample(list: List<Int>) = list.joinToString(separator = " + ", post
  * по формуле abs = sqrt(a1^2 + a2^2 + ... + aN^2).
  * Модуль пустого вектора считать равным 0.0.
  */
-fun abs(v: List<Double>): Double = TODO()
+fun abs(v: List<Double>): Double {
+    if (v.isEmpty()) return 0.0
+    var sum = 0
+    for (element in v) sum += sqr(element).toInt()
+    return sqrt(sum.toDouble())
+}
 
 /**
  * Простая
  *
  * Рассчитать среднее арифметическое элементов списка list. Вернуть 0.0, если список пуст
  */
-fun mean(list: List<Double>): Double = TODO()
+fun mean(list: List<Double>): Double {
+    if (list.isEmpty()) return 0.0
+    return list.sum() / list.size
+}
 
 /**
  * Средняя
@@ -132,7 +145,13 @@ fun mean(list: List<Double>): Double = TODO()
  *
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
-fun center(list: MutableList<Double>): MutableList<Double> = TODO()
+fun center(list: MutableList<Double>): MutableList<Double> {
+    val m = mean(list)
+    for (i in 0 until list.size) {
+        list[i] -= m
+    }
+    return list
+}
 
 /**
  * Средняя
@@ -141,7 +160,12 @@ fun center(list: MutableList<Double>): MutableList<Double> = TODO()
  * представленные в виде списков a и b. Скалярное произведение считать по формуле:
  * C = a1b1 + a2b2 + ... + aNbN. Произведение пустых векторов считать равным 0.0.
  */
-fun times(a: List<Double>, b: List<Double>): Double = TODO()
+fun times(a: List<Double>, b: List<Double>): Double {
+    if (a.isEmpty() || b.isEmpty()) return 0.0
+    var sum = 0.0
+    for (i in 0 until a.size) sum += a[i] * b[i]
+    return sum
+}
 
 /**
  * Средняя
@@ -151,7 +175,12 @@ fun times(a: List<Double>, b: List<Double>): Double = TODO()
  * Коэффициенты многочлена заданы списком p: (p0, p1, p2, p3, ..., pN).
  * Значение пустого многочлена равно 0.0 при любом x.
  */
-fun polynom(p: List<Double>, x: Double): Double = TODO()
+fun polynom(p: List<Double>, x: Double): Double {
+    if (p.isEmpty()) return 0.0
+    var m = 0.0
+    for (i in 0 until p.size) m += p[i] * pow(x, i.toDouble())
+    return m
+}
 
 /**
  * Средняя
@@ -163,7 +192,12 @@ fun polynom(p: List<Double>, x: Double): Double = TODO()
  *
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
-fun accumulate(list: MutableList<Double>): MutableList<Double> = TODO()
+fun accumulate(list: MutableList<Double>): MutableList<Double> {
+    if (list.isEmpty()) return mutableListOf()
+    for (i in 1 until list.size)
+        list[i] = list[i - 1] + list[i]
+    return list
+}
 
 /**
  * Средняя
@@ -172,7 +206,17 @@ fun accumulate(list: MutableList<Double>): MutableList<Double> = TODO()
  * Результат разложения вернуть в виде списка множителей, например 75 -> (3, 5, 5).
  * Множители в списке должны располагаться по возрастанию.
  */
-fun factorize(n: Int): List<Int> = TODO()
+fun factorize(n: Int): List<Int> {
+    val factor = mutableListOf<Int>()
+    var number = n
+    var i: Int
+    while (number > 1) {
+        i = minDivisor(number)
+        factor.add(i)
+        number /= i
+    }
+    return factor.sorted()
+}
 
 /**
  * Сложная
@@ -181,7 +225,8 @@ fun factorize(n: Int): List<Int> = TODO()
  * Результат разложения вернуть в виде строки, например 75 -> 3*5*5
  * Множители в результирующей строке должны располагаться по возрастанию.
  */
-fun factorizeToString(n: Int): String = TODO()
+fun factorizeToString(n: Int): String = factorize(n).joinToString(separator = "*")
+
 
 /**
  * Средняя
@@ -220,7 +265,7 @@ fun decimal(digits: List<Int>, base: Int): Int = TODO()
  * 10 -> a, 11 -> b, 12 -> c и так далее.
  * Например: str = "13c", base = 14 -> 250
  */
-fun decimalFromString(str: String, base: Int): Int = TODO()
+fun decimalFromString(str: String, base: Int): Int = str.toInt(base)
 
 /**
  * Сложная
@@ -237,6 +282,74 @@ fun roman(n: Int): String = TODO()
  *
  * Записать заданное натуральное число 1..999999 прописью по-русски.
  * Например, 375 = "триста семьдесят пять",
- * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
+ * 23964 = "двадцать три тдевятьсоысячи т шестьдесят четыре"
  */
-fun russian(n: Int): String = TODO()
+
+val uni = listOf(" ", "один", "два", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять",
+        "десять", "одинадцать", "двенадцать", "тринадцать", "четырнадцать", "пятнадцать", "шестнадцать", "семнадцать", "восемнадцать", "девятнадцать")
+val uni2 = listOf(" ", "одна", "две", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять")
+val ten = listOf(" ", "десять", "двадцать", "тридцать", "сорок", "пятьдесять", "шестьдесят", "семьдесят", "восемьдесят", "девяносто")
+val hun = listOf(" ", "сто", "двести", "триста", "четыреста", "пятьсот", "шестьсот", "семьсот", "восемьсот", "девятьсот")
+val tho = listOf("тысяча", "тысячи", "тысяч")
+
+
+fun russian(n: Int): String {
+    var left = n
+    val rightSide = mutableListOf<String>()
+    val leftSide = mutableListOf<String>()
+    rightSide += lastHun(left) + if (left % 100 in 11..19) right1(left)
+    else right2(left) + last(left)
+
+    left /= 1000
+
+    if (left > 0)
+        leftSide += lastHun(left) + (if (left % 100 in 11..19) right1(left)
+        else right2(left) + thous(left)) + thousands(left)
+    return (leftSide + rightSide).joinToString(separator = " ")
+}
+
+
+fun last(n: Int): String = if (n % 10 > 0) uni[n % 10] else ""
+
+fun right1(n: Int): String = if (n % 100 > 0) uni[n % 100] else ""
+
+fun right2(n: Int): String = if (n / 10 % 10 > 0) ten[n / 10 % 10] else ""
+
+fun lastHun(n: Int): String = if (n / 100 % 10 > 0) hun[n / 100 % 10] else ""
+
+fun thous(n: Int): String = uni2[n % 10]
+
+fun thousands(n: Int): String =
+        when {
+            n % 10 == 1 && n % 100 != 11 -> tho[0]
+            n % 10 in 2..4 && n % 100 !in 12..14 -> tho[1]
+            else -> tho[2]
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
