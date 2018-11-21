@@ -122,9 +122,9 @@ fun buildSumExample(list: List<Int>) = list.joinToString(separator = " + ", post
  */
 fun abs(v: List<Double>): Double {
     if (v.isEmpty()) return 0.0
-    var sum = 0
-    for (element in v) sum += sqr(element).toInt()
-    return sqrt(sum.toDouble())
+    var sum = 0.0
+    for (element in v) sum = sqr(element)
+    return sqrt(sum)
 }
 
 /**
@@ -193,7 +193,7 @@ fun polynom(p: List<Double>, x: Double): Double {
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
 fun accumulate(list: MutableList<Double>): MutableList<Double> {
-    if (list.isEmpty()) return mutableListOf()
+    if (list.isEmpty()) return list
     for (i in 1 until list.size)
         list[i] = list[i - 1] + list[i]
     return list
@@ -285,12 +285,12 @@ fun roman(n: Int): String = TODO()
  * 23964 = "двадцать три тдевятьсоысячи т шестьдесят четыре"
  */
 
-val uni = listOf(" ", "один", "два", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять",
-        "десять", "одинадцать", "двенадцать", "тринадцать", "четырнадцать", "пятнадцать", "шестнадцать", "семнадцать", "восемнадцать", "девятнадцать")
-val uni2 = listOf(" ", "одна", "две", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять")
-val ten = listOf(" ", "десять", "двадцать", "тридцать", "сорок", "пятьдесять", "шестьдесят", "семьдесят", "восемьдесят", "девяносто")
-val hun = listOf(" ", "сто", "двести", "триста", "четыреста", "пятьсот", "шестьсот", "семьсот", "восемьсот", "девятьсот")
-val tho = listOf("тысяча", "тысячи", "тысяч")
+val uni = listOf("", "один ", "два ", "три ", "четыре ", "пять ", "шесть ", "семь ", "восемь ", "девять ",
+        "десять ", "одинадцать ", "двенадцать ", "тринадцать ", "четырнадцать ", "пятнадцать ", "шестнадцать ", "семнадцать ", "восемнадцать ", "девятнадцать ")
+val uni2 = listOf("", "одна ", "две ", "три ", "четыре ", "пять ", "шесть ", "семь ", "восемь ", "девять ")
+val ten = listOf("", "десять ", "двадцать ", "тридцать ", "сорок ", "пятьдесять ", "шестьдесят ", "семьдесят ", "восемьдесят ", "девяносто ")
+val hun = listOf("", "сто ", "двести ", "триста ", "четыреста ", "пятьсот ", "шестьсот ", "семьсот ", "восемьсот ", "девятьсот ")
+val tho = listOf("тысяча ", "тысячи ", "тысяч ")
 
 
 fun russian(n: Int): String {
@@ -305,7 +305,7 @@ fun russian(n: Int): String {
     if (left > 0)
         leftSide += lastHun(left) + (if (left % 100 in 11..19) right1(left)
         else right2(left) + thous(left)) + thousands(left)
-    return (leftSide + rightSide).joinToString(separator = " ")
+    return (leftSide + rightSide).joinToString(separator = "").dropLast(1)
 }
 
 
