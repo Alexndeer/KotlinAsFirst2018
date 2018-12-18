@@ -74,7 +74,7 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
     }
     return result
 }
-
+/**/
 
 /**
  * Средняя
