@@ -2,6 +2,11 @@
 
 package lesson6.task1
 
+import kotlinx.html.InputType
+import lesson10.task1.parseExpr
+import lesson2.task2.daysInMonth
+import java.lang.NumberFormatException
+
 /**
  * Пример
  *
@@ -49,12 +54,10 @@ fun main(args: Array<String>) {
         val seconds = timeStrToSeconds(line)
         if (seconds == -1) {
             println("Введённая строка $line не соответствует формату ЧЧ:ММ:СС")
-        }
-        else {
+        } else {
             println("Прошло секунд с начала суток: $seconds")
         }
-    }
-    else {
+    } else {
         println("Достигнут <конец файла> в процессе чтения строки. Программа прервана")
     }
 }
@@ -71,7 +74,27 @@ fun main(args: Array<String>) {
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30.02.2009) считается неверными
  * входными данными.
  */
-fun dateStrToDigit(str: String): String = TODO()
+fun dateStrToDigit(str: String): String {
+    val parts = str.split(" ")
+    var month = 0
+    try {
+        if (parts.size != 3) throw NumberFormatException()
+        val monthList = listOf("", "января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября",
+                "октября", "ноября", "декабря")
+        if (parts[1] in monthList)
+            month = monthList.indexOf(parts[1])
+
+
+        if (parts[0].toInt() <= daysInMonth(month, parts[2].toInt())) {
+            return String.format("%02d.%02d.%s", parts[0].toInt(), month, parts[2])
+        } else
+            throw IndexOutOfBoundsException()
+
+    } catch (e: Exception) {
+        return ""
+
+    }
+}
 
 /**
  * Средняя
@@ -83,7 +106,36 @@ fun dateStrToDigit(str: String): String = TODO()
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30 февраля 2009) считается неверными
  * входными данными.
  */
-fun dateDigitToStr(digital: String): String = TODO()
+fun dateDigitToStr(digital: String): String {
+    val parts = digital.split(".")
+
+    try {
+        if (parts.size != 3) throw NumberFormatException()
+        val month = when (parts[1]) {
+            "01" -> "января"
+            "02" -> "февраля"
+            "03" -> "марта"
+            "04" -> "апреля"
+            "05" -> "мая"
+            "06" -> "июня"
+            "07" -> "июля"
+            "08" -> "августа"
+            "09" -> "сентября"
+            "10" -> "октября"
+            "11" -> "ноября"
+            "12" -> "декабря"
+            else -> throw NumberFormatException()
+        }
+        if (parts[0].toInt() <= daysInMonth(parts[1].toInt(), parts[2].toInt())) {
+            return String.format("%s %s %s", parts[0].toInt(), month, parts[2])
+        } else
+            throw IndexOutOfBoundsException()
+
+    } catch (e: Exception) {
+        return ""
+
+    }
+}
 
 /**
  * Средняя
@@ -97,7 +149,12 @@ fun dateDigitToStr(digital: String): String = TODO()
  * Все символы в номере, кроме цифр, пробелов и +-(), считать недопустимыми.
  * При неверном формате вернуть пустую строку
  */
-fun flattenPhoneNumber(phone: String): String = TODO()
+fun flattenPhoneNumber(phone: String): String {
+    return if (!Regex("""[^\d()\s+-]""").containsMatchIn(phone))
+        phone.replace(Regex("""[\s()-]"""), "")
+    else ""
+}
+
 
 /**
  * Средняя

@@ -95,8 +95,7 @@ fun buildWordSet(text: List<String>): MutableSet<String> {
  *   ) -> mapOf("Emergency" to "112, 911", "Police" to "02")
  */
 fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> {
-    val phoneBook = mutableMapOf<String, String>()
-    phoneBook += mapA + mapB
+    val phoneBook = (mapA + mapB).toMutableMap()
 
     mapA.forEach { name, phone ->
         if (phone != mapB[name] && mapB.containsKey(name))
@@ -118,8 +117,9 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
 fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
     val uni = mutableMapOf<Int, List<String>>()
     grades.forEach { name, mark ->
-        uni[mark] = ((uni[mark] ?: listOf()) + name).sortedDescending()
+        uni[mark] = uni.getOrPut(mark) { listOf() } + name
     }
+    for ((k, v) in uni) uni[k] = v.sortedDescending()
     return uni
 }
 
@@ -147,6 +147,7 @@ fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean = b + a 
  *     -> mapOf("MSFT" to 150.0, "NFLX" to 40.0)
  */
 fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> = TODO()
+
 /**
  * Средняя
  *
@@ -237,7 +238,7 @@ fun whoAreInBoth(a: List<String>, b: List<String>): List<String> = a.filter { it
  * Например:
  *   canBuildFrom(listOf('a', 'b', 'o'), "baobab") -> true
  */
-fun canBuildFrom(chars: List<Char>, word: String): Boolean = word.all { it in chars }
+fun canBuildFrom(chars: List<Char>, word: String): Boolean = word.toLowerCase().all { it in chars }
 
 /**
  * Средняя
@@ -256,13 +257,17 @@ fun extractRepeats(list: List<String>): Map<String, Int> {
 
     for (element in list) {
         if (list.count { it == element } > 1) {
-            if (element in repeats.keys) repeats[element] = repeats[element]!! + 1
-            else repeats[element] = 1
+
+            if (list.count { it == element } > 1) {
+                repeats[element] = list.count { it == element }
+
+            }
         }
 
     }
     return repeats
 }
+
 /**
  * Средняя
  *

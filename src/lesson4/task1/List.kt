@@ -122,9 +122,7 @@ fun buildSumExample(list: List<Int>) = list.joinToString(separator = " + ", post
  */
 fun abs(v: List<Double>): Double {
     if (v.isEmpty()) return 0.0
-    var sum = 0.0
-    for (element in v) sum += sqr(element)
-    return sqrt(sum)
+    return sqrt(v.sumByDouble { sqr(it) })
 }
 
 /**
@@ -162,9 +160,7 @@ fun center(list: MutableList<Double>): MutableList<Double> {
  */
 fun times(a: List<Double>, b: List<Double>): Double {
     if (a.isEmpty() || b.isEmpty()) return 0.0
-    var sum = 0.0
-    for (i in 0 until a.size) sum += a[i] * b[i]
-    return sum
+    return a.mapIndexed { index, it -> it * b[index] }.sum()
 }
 
 /**
@@ -175,12 +171,7 @@ fun times(a: List<Double>, b: List<Double>): Double {
  * Коэффициенты многочлена заданы списком p: (p0, p1, p2, p3, ..., pN).
  * Значение пустого многочлена равно 0.0 при любом x.
  */
-fun polynom(p: List<Double>, x: Double): Double {
-    if (p.isEmpty()) return 0.0
-    var m = 0.0
-    for (i in 0 until p.size) m += p[i] * pow(x, i.toDouble())
-    return m
-}
+fun polynom(p: List<Double>, x: Double): Double = p.mapIndexed { index, it -> it * pow(x, index.toDouble()) }.sum()
 
 /**
  * Средняя
@@ -195,7 +186,7 @@ fun polynom(p: List<Double>, x: Double): Double {
 fun accumulate(list: MutableList<Double>): MutableList<Double> {
     if (list.isEmpty()) return list
     for (i in 1 until list.size)
-        list[i] = list[i - 1] + list[i]
+        list[i] += list[i - 1]
     return list
 }
 
@@ -215,7 +206,7 @@ fun factorize(n: Int): List<Int> {
         factor.add(i)
         number /= i
     }
-    return factor.sorted()
+    return factor
 }
 
 /**
@@ -265,7 +256,7 @@ fun decimal(digits: List<Int>, base: Int): Int = TODO()
  * 10 -> a, 11 -> b, 12 -> c и так далее.
  * Например: str = "13c", base = 14 -> 250
  */
-fun decimalFromString(str: String, base: Int): Int = str.toInt(base)
+fun decimalFromString(str: String, base: Int): Int = TODO()
 
 /**
  * Сложная
